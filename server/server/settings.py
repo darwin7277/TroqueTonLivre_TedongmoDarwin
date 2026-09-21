@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/6.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -128,3 +128,12 @@ MAILERS = {
 }
 
 AUTH_USER_MODEL = 'library.User'
+
+OPENLIBRARY_API_URL = os.environ.get(
+    'OPENLIBRARY_API_URL',
+    'https://openlibrary.org/api/books.json'
+)
+
+OPENLIBRARY_TIMEOUT = float(
+    os.environ.get('OPENLIBRARY_TIMEOUT', '5')
+)
