@@ -2,5 +2,29 @@
 
 {% block title %}Créer un compte{% endblock title %}
 {% block content %}
-    créer un compte
+
+     {% if form.errors %}
+            <div class="alert alert-danger">
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <p>{{ field }}: {{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+    {% endif %}
+
+   <form method="post" novalidate>
+   {% csrf_token %}
+   {% for field in form.visible_fields %}
+    <div class="form-group">
+        <div class="text-danger">{{ field.errors }}</div>
+        {{ field.label_tag }}
+        {{ field }}
+    </div>
+   {% endfor %}
+
+   <input class="btn btn-primary" type="submit" value="Envoyer">
+</form>
+
+    <p><a href="{% url 'login' %}">Déjà un compte ? Se connecter</a></p>
 {% endblock content %}
