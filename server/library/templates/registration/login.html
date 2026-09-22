@@ -1,0 +1,23 @@
+{% extends "library/base.html" %}
+{% block title %} Se connecter {% endblock title %}
+{% block content %}
+    <div class="container">
+        <h2>Connexion</h2>
+        
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-primary" type="submit">
+                Se connecter
+            </button>
+        </form>
+        
+        <p><a href="{% url 'signup' %}">Pas encore de compte ? S'inscrire</a></p>
+    </div>
+{% endblock content %}
