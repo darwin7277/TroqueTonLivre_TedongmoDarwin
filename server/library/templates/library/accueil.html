@@ -1,7 +1,10 @@
-{% extends "library/base.html" %}
 
+
+{% extends "library/base.html" %}
+{% load static %}
 {% block title %}Accueil{% endblock title %}
 {% block content %}
+
     <h1 class="mt-4">Livres disponibles</h1>
 
     <div class="mt-4">
@@ -24,8 +27,130 @@
     </div>
 
     <div class="row">
-        <div class= "col-md-4 mb-4">
+
+    {% for book in page_obj %}
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card h-100">
+
+                {% if book.cover_url %}
+
+                    <img src="{{ book.cover_url }}" alt="Couverture de {{ book.title }}"
+                        class="card-img-top book-cover" >
+
+                {% else %}
+
+                    <img src="{% static 'library/images/default_cover.png' %}" alt="Couverture par défaut"
+                        class="card-img-top book-cover" >
+
+                {% endif %}
+
+
+                <div class="card-body">
+
+                    <h2 class="h5">
+                        {{ book.title }}
+                    </h2>
+
+                    <p>
+                        <strong>Auteur :</strong>
+                        {{ book.author }}
+                    </p>
+
+                    <p>
+                        <strong>Genre :</strong>
+
+                        {% if book.genre %}
+                            {{ book.genre.name }}
+                        {% else %}
+                            Non précisé
+                        {% endif %}
+                    </p>
+
+                    <p>
+                        <strong>État :</strong>
+                        {{ book.get_condition_display }}
+                    </p>
+
+                    <p>
+                        <strong>Propriétaire :</strong>
+                        {{ book.owner.username }}
+                    </p>
+
+
+                    {% if book.is_available %}
+
+                        <span class="badge bg-success">
+                            Disponible
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-secondary">
+                            Réservé
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="card-footer">
+
+                    <a href="#" class="btn btn-primary" >
+                        Voir détails
+                    </a>
+
+                </div>
+
+            </div>
 
         </div>
+
+    {% empty %}
+
+        <p>
+            Aucun livre à afficher.
+        </p>
+
+    {% endfor %}
+
+</div>
+
+{% if page_obj.paginator.num_pages > 1 %}
+
+    <div>
+
+        <div class="d-flex gap-2 align-items-center">
+
+            {% if page_obj.has_previous %}
+
+                <a class="btn btn-outline-secondary"
+                    href="{% url 'home' %}?view={{ current_view }}&page={{ page_obj.previous_page_number }}" >
+                    Précédent
+                </a>
+
+            {% endif %}
+
+
+            <span>
+                Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
+            </span>
+
+
+            {% if page_obj.has_next %}
+
+                <a class="btn btn-outline-secondary"
+                    href="{% url 'home' %}?view={{ current_view }}&page={{ page_obj.next_page_number }}" >
+                    Suivant
+                </a>
+
+            {% endif %}
+
+        </div>
+
     </div>
+
+{% endif %}
 {% endblock content %}
