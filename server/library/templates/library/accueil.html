@@ -1,4 +1,31 @@
 {% extends "library/base.html" %}
 
 {% block title %}Accueil{% endblock title %}
-{% block content %}Allo{% endblock content %}
+{% block content %}
+    <h1 class="mt-4">Livres disponibles</h1>
+
+    <div class="mt-4">
+        <a href="{% url "home" %}?view=all" class="btn btn-outline-primary">
+        Tous les livres
+        </a>
+
+         {% if user.is_authenticated %}
+
+        <a href="{% url 'home' %}?view=library" class="btn btn-outline-primary">
+            Ma bibliothèque
+        </a>
+
+        <a href="{% url 'home' %}?view=emprunt" class="btn btn-outline-primary">
+            Mes emprunts
+        </a>
+
+    {% endif %}
+
+    </div>
+
+    <div class="row">
+        <div class= "col-md-4 mb-4">
+
+        </div>
+    </div>
+{% endblock content %}
