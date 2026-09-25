@@ -1,0 +1,17 @@
+.status-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+}
+
+.available {
+    background-color: #e7f7ed;
+    color: #198754;
+    border: 1px solid #b7e4c7;
+}
+
+.reserved {
+    background-color: #fbeaea;
+    color: #b42318;
+    border: 1px solid #f3b5b5;
+}   

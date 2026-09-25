@@ -1,0 +1,102 @@
+{% extends "library/base.html" %}
+{% load static %}
+
+{% block title %}Détails du livre{% endblock title %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h1 class="mb-4"> Détails du livre </h1>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+
+            {% if book.cover_url %}
+                <img src="{{ book.cover_url }}" alt="Couverture de {{ book.title }}" class="img-fluid rounded shadow">
+            {% else %}
+                <img src="{% static 'library/images/default_cover.png' %}" alt="Couverture par défaut" class="img-fluid rounded">
+            {% endif %}
+
+        </div>
+
+        <div class="col-md-8">
+            <h2 class="mb-4"> {{ book.title }} </h2>
+
+            <p><strong>Auteur :</strong> {{ book.author }}</p>
+            <p><strong>Éditeur :</strong> {{ book.publisher }}</p>
+            <p><strong>Année de publication :</strong> {{ book.publication_year }}</p>
+            <p><strong>ISBN :</strong> {{ book.isbn }}</p>
+
+            <p>
+                <strong>Genre :</strong>
+                {% if book.genre %}
+                    {{ book.genre.name }}
+                {% else %}
+                    Non précisé
+                {% endif %}
+            </p>
+
+            <p><strong>État :</strong> {{ book.get_condition_display }}</p>
+
+            <p> 
+                <strong>Commentaire du propriétaire :</strong>
+                {% if book.comment %}
+                    {{ book.comment }}
+                {% else %}
+                    Aucun commentaire
+                {% endif %}
+            </p>
+
+            <p><strong>Propriétaire :</strong> {{ book.owner.username }}</p>
+            <p><strong>Ville :</strong> {{ book.owner.city }}</p>
+
+            {% if book.is_available %}
+                <p>
+                    <strong>Statut :</strong>
+                    <span class="status-badge available"> Disponible </span>
+                </p>
+            {% else %}
+                <p>
+                    <strong>Statut :</strong>
+                    <span class="status-badge reserved"> Réservé </span>
+                </p>
+
+                <p><strong>Emprunteur :</strong> {{ book.borrower.username }}</p>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                <div class="mt-4">
+
+                    {% if book.owner == request.user %}
+                        <a href="{% url 'edit_book' book.id %}" class="btn btn-primary"> Modifier </a>
+
+                        <form method="post" action="{% url 'delete_book' book.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger"> Supprimer </button>
+                        </form>
+
+                        {% if not book.is_available %}
+                            <form method="post" action="{% url 'return_book' book.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success"> Marquer comme remis </button>
+                            </form>
+                        {% endif %}
+
+                    {% else %}
+
+                        {% if book.is_available %}
+                            <form method="post" action="{% url 'reserve_book' book.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary"> Réserver ce livre </button>
+                            </form>
+                        {% endif %}
+
+                    {% endif %}
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
