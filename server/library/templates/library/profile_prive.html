@@ -1,0 +1,63 @@
+{% extends 'library/base.html'%}
+{% block title %}Profil privé{% endblock title %}
+{%load static%}
+{% block content %}
+    <div class="container mt-5">
+    <h1 class="mb-4"> Profil </h1>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="text-center" shadow>
+                {% if book.owner.avatar %}
+                <img src="{{ book.cover_url }}" alt="Couverture de {{ book.username}}" class="img-fluid rounded shadow">
+            {% else %}
+                <img src="{% static 'library/images/user.avif' %}" alt="Avatar par défaut" class="img-fluid rounded w-auto w-25">
+            {% endif %}
+
+            <strong class="mt-5">{{user.username}}</strong>
+            <div>
+                <small>{{user.nom}} {{user.prenom}}</small>
+                
+            </div>
+            </div>
+            
+              
+            <div>
+                <strong>Courriel</strong>
+                <p>{{user.ville}}</p>
+            </div>
+
+            <div>
+                <strong>Ville</strong>
+                <p>{{user.city}}</p>
+            </div>
+             
+            <div>
+                <strong>Biographie</strong>
+                <p class="">{{user.bio}}</p>
+            </div>
+             
+             <a href="{% url 'edit_profil'%}" class="btn btn-outline-primary">
+                Modifier mon profile
+             </a>
+
+             <div class="align-items-center gap-3 d-flex mt-3 ">
+                <div class="col-6 text-center bg-secondary-subtle rounded-4">
+                    <p>{{emprunt_user.count}}</p>
+                    <p>Emprunts</p>
+                </div>
+
+                <div class="col-6 text-center  bg-secondary-subtle  rounded-4">
+                    <p>{{bibliotheque_user.count}}</p>
+                    <p>Livres</p>
+                </div>
+             </div>
+
+        </div>
+
+        <div class="col-md-8">
+            
+        </div>
+    </div>
+</div>
+{% endblock content %}

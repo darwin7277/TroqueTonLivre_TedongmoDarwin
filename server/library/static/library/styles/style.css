@@ -15,3 +15,9 @@
     color: #b42318;
     border: 1px solid #f3b5b5;
 }   
+
+.avatar {
+   width: auto;
+   max-width: .1rem;
+   border: 3px solid salmon;
+}

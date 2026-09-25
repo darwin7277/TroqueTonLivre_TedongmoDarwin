@@ -1,0 +1,38 @@
+{% extends 'library/base.html'%}
+{% load static %}
+{% block title %}Profil{% endblock title %}
+
+{% block content %}
+<div class="row mt-5">
+        <div class="col-md-4 mb-4 text-center">
+
+           
+            {% if book.owner.avatar %}
+                <img src="{{ book.cover_url }}" alt="Couverture de {{ book.username}}" class="img-fluid rounded shadow">
+            {% else %}
+                <img src="{% static 'library/images/user.avif' %}" alt="Avatar par défaut" class=" img-fluid rounded">
+            {% endif %}
+              
+            
+             <h2 class="mt-5">{{user.username}}</h2>
+             <p>{{user.city}}</p>
+             <p class="">{{user.bio}}</p>
+
+        </div>
+
+        <div class="col-md-8 mt-5">
+            <h3>Livre disponibles de {{user.username}}</h3>
+            {% for b in books %}
+                <div class='d-flex justify-content-between mb-3 mt-3'>
+                    <div class="mb-4">
+                        <strong class='mb-5 p-2'>{{b.title}}</strong>
+                        <p class='mb-5'> <strong>Auteur - </strong> {{b.author}}</p>
+                    </div>
+
+                    <div>{{b.condition}}</div>
+                    
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

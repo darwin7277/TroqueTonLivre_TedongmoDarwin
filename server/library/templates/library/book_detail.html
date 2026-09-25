@@ -47,7 +47,12 @@
                 {% endif %}
             </p>
 
-            <p><strong>Propriétaire :</strong> {{ book.owner.username }}</p>
+            {% if book.owner.id != user.id%}
+                        <p><strong>Propriétaire :</strong> <a href="{% url 'profil_public' book.owner.id%} " >{{ book.owner.username }}</a></p>
+                    {%else%}
+                        <p><strong>Propriétaire :</strong> <a href="{% url 'profil_prive'%} " >{{ book.owner.username }}</a></p>
+            {% endif %}
+
             <p><strong>Ville :</strong> {{ book.owner.city }}</p>
 
             {% if book.is_available %}

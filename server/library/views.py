@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
-from .forms import RegisterForm, ISBNForm, BookForm
+from .forms import RegisterForm, ISBNForm, BookForm, UserForm
 from django.contrib import messages
 from django.contrib.auth import login
 from django.core.paginator import Paginator
-from .models import Book
+from .models import Book, User
 from .services import get_book_info
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -276,3 +276,40 @@ def delete_book(request, book_id):
 
 
     return redirect('book_detail', book_id=book.id)
+
+@login_required
+def profil_pubic(request, pk):
+    user = User.objects.get(id=pk)
+    books_disponible = Book.objects.filter(owner = user,
+                                          is_available = True)
+    
+    return render(request, 'library/profil_public.html',{
+        'user': user,
+        'books': books_disponible
+    })
+
+@login_required
+def profil_prive(request):
+    book_user = request.user
+    bibliotheque_user = Book.objects.filter(owner=book_user)
+    emprunt_user = Book.objects.filter(borrower=book_user)
+
+    return render(request, 'library/profile_prive.html', {
+        'bibliotheque_user': bibliotheque_user,
+        'emprunt_user': emprunt_user,
+        'book_user': book_user
+    })
+
+@login_required
+def edit_profile(request):
+
+    user = request.user
+
+    if request.method == 'GET':
+        form = UserForm(
+            initial 
+        )
+
+
+    return render(request, 'library/modif_profil.html')
+

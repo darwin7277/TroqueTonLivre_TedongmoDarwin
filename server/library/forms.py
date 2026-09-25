@@ -99,3 +99,27 @@ class BookForm(BootstrapMixin, forms.ModelForm):
                 )
 
         return isbn
+
+class UserForm(BootstrapMixin, forms.ModelForm):
+      def __init__(self, *args, user=None, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.user = user
+    
+      class Meta:
+          model = User
+
+      fields = [
+                   'username',
+                   'nom',
+                   'prenom',
+                   'city',
+                   'bio',
+                   'email',
+               ]
+      
+      def clean_user(self):
+              
+              user = self.cleaned_data['user']
+
+              return self.user
+               
